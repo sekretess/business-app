@@ -1,1 +1,1 @@
-# business-java-client
+# Business application to send encrypted messages
