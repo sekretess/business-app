@@ -2,3 +2,6 @@
 mvnw
 mvnw.cmd
 HELP.md
+target/
+.DS_Store
+/sekretess-db.mv.db
