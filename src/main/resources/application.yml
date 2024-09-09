@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: sekretess-business-app
+  h2:
+    console:
+      enabled: true
+      path: /h2-ui
+  datasource:
+    url: jdbc:h2:file:./sekretess-db
+    #    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    defer-datasource-initialization: true
+
+app:
+  config:
+    username: test
+    server:
+      business:
+        url: http://business.sekretess.co:8082/api/v1
+      consumer:
+        url: http://consumer.sekretess.co:8081/api/v1
+
