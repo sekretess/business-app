@@ -93,11 +93,7 @@ public class SekretessBusinessService {
                     signedPreKeySignature,
                     idenKey);
 
-        } catch (IOException e) {
-            logger.error("exception happened! {}",e.getMessage(),e);
-        } catch (InterruptedException e) {
-            logger.error("exception happened! {}",e.getMessage(),e);
-        } catch (InvalidKeyException e) {
+        } catch (IOException | InterruptedException | InvalidKeyException e) {
             logger.error("exception happened! {}",e.getMessage(),e);
         }
 
