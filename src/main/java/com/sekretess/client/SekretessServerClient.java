@@ -35,7 +35,7 @@ public class SekretessServerClient {
     public void sendMessage(String sender, String text, String consumer) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer))))
-                .uri(URI.create(businessServerUrl + "/businesses/messages"))
+                .uri(URI.create(businessServerUrl + "/api/v1/businesses/messages"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -51,7 +51,7 @@ public class SekretessServerClient {
     public ConsumerKeysResponse getConsumerKeys(String consumer) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(consumerServerUrl + "/consumers/" + consumer + "/key-bundles"))
+                .uri(URI.create(consumerServerUrl + "/api/v1/consumers/" + consumer + "/key-bundles"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
