@@ -6,8 +6,7 @@ spring:
       enabled: true
       path: /h2-ui
   datasource:
-    url: jdbc:h2:file:./sekretess-db
-    #    url: jdbc:h2:mem:testdb
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:./sekretess-business-app-db}
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -20,10 +19,10 @@ spring:
 
 app:
   config:
-    username: test
+    username: ${BUSINESS_USER_NAME:sekretess_test}
     server:
       business:
-        url: http://business.sekretess.co:8082/api/v1
+        url: ${SEKRETESS_BUSINESS_SERVER_URL:http://business.sekretess.co:8082}
       consumer:
-        url: http://consumer.sekretess.co:8081/api/v1
+        url: ${SEKRETESS_CONSUMER_SERVER_URL:http://consumer.sekretess.co:8081}
 
