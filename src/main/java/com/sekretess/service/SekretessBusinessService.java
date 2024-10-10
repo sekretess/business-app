@@ -94,11 +94,11 @@ public class SekretessBusinessService {
                     idenKey);
 
         } catch (IOException e) {
-            logger.error("exception happened");
+            logger.error("exception happened! {}",e.getMessage(),e);
         } catch (InterruptedException e) {
-            logger.error("exception happened");
+            logger.error("exception happened! {}",e.getMessage(),e);
         } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
+            logger.error("exception happened! {}",e.getMessage(),e);
         }
 
         return null;
