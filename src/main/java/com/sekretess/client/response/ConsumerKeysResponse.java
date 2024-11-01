@@ -9,6 +9,9 @@ public class ConsumerKeysResponse {
     private String spkSignature;
     private String spk;
     private String spkId;
+    private String pqspk;
+    private String pqspkID;
+    private String pqSpkSignature;
 
     public String getUsername() {
         return username;
@@ -66,6 +69,30 @@ public class ConsumerKeysResponse {
         this.spkId = spkId;
     }
 
+    public String getPqspk() {
+        return pqspk;
+    }
+
+    public void setPqspk(String pqspk) {
+        this.pqspk = pqspk;
+    }
+
+    public String getPqspkID() {
+        return pqspkID;
+    }
+
+    public void setPqspkID(String pqspkID) {
+        this.pqspkID = pqspkID;
+    }
+
+    public String getPqSpkSignature() {
+        return pqSpkSignature;
+    }
+
+    public void setPqSpkSignature(String pqSpkSignature) {
+        this.pqSpkSignature = pqSpkSignature;
+    }
+
     @Override
     public String toString() {
         return "ConsumerKeysResponse{" +
@@ -76,6 +103,9 @@ public class ConsumerKeysResponse {
                 ", spkSignature='" + spkSignature + '\'' +
                 ", spk='" + spk + '\'' +
                 ", spkId='" + spkId + '\'' +
+                ", pqspk='" + pqspk + '\'' +
+                ", pqspkID='" + pqspkID + '\'' +
+                ", pqSpkSignature='" + pqSpkSignature + '\'' +
                 '}';
     }
 }

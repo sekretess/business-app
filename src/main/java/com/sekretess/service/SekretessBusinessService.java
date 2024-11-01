@@ -6,6 +6,7 @@ import com.sekretess.dto.MessageDTO;
 import com.sekretess.repository.SekretessInMemorySignalProtocolStore;
 import org.signal.libsignal.protocol.*;
 import org.signal.libsignal.protocol.ecc.ECPublicKey;
+import org.signal.libsignal.protocol.kem.KEMPublicKey;
 import org.signal.libsignal.protocol.message.CiphertextMessage;
 import org.signal.libsignal.protocol.message.PreKeySignalMessage;
 import org.signal.libsignal.protocol.state.PreKeyBundle;
@@ -80,9 +81,14 @@ public class SekretessBusinessService {
             String identityKey = consumerKeysResponse.getIk();
             int signedPreKeyId = Integer.parseInt(consumerKeysResponse.getSpkId());
             byte[] signedPreKeySignature = Base64.getDecoder().decode(consumerKeysResponse.getSpkSignature());
+            String pqSignedPrekey = consumerKeysResponse.getPqspk();
+            int pqSignedPrekeyId = Integer.parseInt(consumerKeysResponse.getPqspkID());
+            byte[] pqSignedPrekeySignature = Base64.getDecoder().decode(consumerKeysResponse.getPqSpkSignature());
+
             ECPublicKey signPrekey = new ECPublicKey(Base64.getDecoder().decode(signedPreKey));
             ECPublicKey preKeyRecord = new ECPublicKey(Base64.getDecoder().decode(preKeyRecordValue));
             IdentityKey idenKey = new IdentityKey(Base64.getDecoder().decode(identityKey));
+            KEMPublicKey kemPublicKey = new KEMPublicKey(Base64.getDecoder().decode(pqSignedPrekey));
             return new PreKeyBundle(
                     regId,
                     1,
@@ -91,10 +97,13 @@ public class SekretessBusinessService {
                     signedPreKeyId,
                     signPrekey,
                     signedPreKeySignature,
-                    idenKey);
+                    idenKey,
+                    pqSignedPrekeyId,
+                    kemPublicKey,
+                    pqSignedPrekeySignature);
 
         } catch (IOException | InterruptedException | InvalidKeyException e) {
-            logger.error("exception happened! {}",e.getMessage(),e);
+            logger.error("exception happened! {}", e.getMessage(), e);
         }
 
         return null;
