@@ -3,6 +3,7 @@ package com.sekretess.client;
 import com.google.gson.Gson;
 import com.sekretess.client.request.SendMessage;
 import com.sekretess.client.response.ConsumerKeysResponse;
+import com.sekretess.client.response.SendMessageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class SekretessServerClient {
         this.consumerServerUrl = consumerServerUrl;
     }
 
-    public void sendMessage(String sender, String text, String consumer) throws IOException, InterruptedException {
+    public String sendMessage(String sender, String text, String consumer) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer))))
                 .uri(URI.create(businessServerUrl + "/api/v1/businesses/messages"))
@@ -40,10 +41,14 @@ public class SekretessServerClient {
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() != 202) {
+        if (response.statusCode() != 200) {
             logger.error("Failed to send text message to consumer! {}", consumer);
+            throw new RuntimeException("Failed to send text message to consumer!" + consumer);
         } else {
             logger.info("Successfully forwarded message for consumer! {}", consumer);
+            Gson gson = new Gson();
+            SendMessageResponse sendMessageResponse = gson.fromJson(response.body(), SendMessageResponse.class);
+            return sendMessageResponse.ik();
         }
 
     }
