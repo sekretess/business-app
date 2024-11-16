@@ -3,6 +3,7 @@ package com.sekretess.service;
 import com.sekretess.client.SekretessServerClient;
 import com.sekretess.client.response.ConsumerKeysResponse;
 import com.sekretess.dto.MessageDTO;
+import com.sekretess.exception.RetryMessageException;
 import com.sekretess.repository.SekretessInMemorySignalProtocolStore;
 import org.signal.libsignal.protocol.*;
 import org.signal.libsignal.protocol.ecc.ECPublicKey;
@@ -17,15 +18,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Service
 public class SekretessBusinessService {
-    private SekretessInMemorySignalProtocolStore sekretessInMemorySignalProtocolStore;
-    private SekretessServerClient sekretessServerClient;
+    private final SekretessInMemorySignalProtocolStore sekretessInMemorySignalProtocolStore;
+    private final SekretessServerClient sekretessServerClient;
+    private final String username;
     private static final Logger logger = LoggerFactory.getLogger(SekretessBusinessService.class);
 
-    private final String username;
 
     public SekretessBusinessService(SekretessInMemorySignalProtocolStore sekretessInMemorySignalProtocolStore,
                                     SekretessServerClient sekretessServerClient,
@@ -41,6 +43,32 @@ public class SekretessBusinessService {
         sekretessInMemorySignalProtocolStore.deleteSession(new SignalProtocolAddress(user, 123));
     }
 
+
+    private void handleRetrySendMessage(MessageDTO messageDTO) {
+        logger.info("Received to retry message to consumer: {}", messageDTO.getConsumer());
+        SignalProtocolAddress consumerAddress = new SignalProtocolAddress(messageDTO.getConsumer(), 123);
+        SessionBuilder sessionBuilder = new SessionBuilder(sekretessInMemorySignalProtocolStore, consumerAddress);
+        PreKeyBundle consumerPrekeyBundle = getConsumerPrekeyBundle(messageDTO.getConsumer());
+        sekretessInMemorySignalProtocolStore.saveIdentity(consumerAddress,consumerPrekeyBundle.getIdentityKey());
+        try {
+            sessionBuilder.process(consumerPrekeyBundle);
+            sekretessInMemorySignalProtocolStore.loadSession(consumerAddress);
+        } catch (InvalidKeyException | UntrustedIdentityException e) {
+            logger.error("Exception happened when trying to create session with consumer: {} , {}", messageDTO.getConsumer(), e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+
+
+        SessionCipher sessionCipher = new SessionCipher(sekretessInMemorySignalProtocolStore, consumerAddress);
+        try {
+            CiphertextMessage ciphertextMessage = sessionCipher.encrypt(messageDTO.getText().getBytes());
+            PreKeySignalMessage signalMessage = new PreKeySignalMessage(ciphertextMessage.serialize());
+            sekretessServerClient.sendMessage(username, Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer());
+        } catch (Exception e) {
+            logger.error("Exception happened when trying to send message! {}", e.getMessage(), e);
+        }
+    }
+
     public void handleSendMessage(MessageDTO messageDTO) {
         logger.info("Send message request received to send message to consumer: {}", messageDTO.getConsumer());
         SignalProtocolAddress consumerAddress = new SignalProtocolAddress(messageDTO.getConsumer(), 123);
@@ -51,6 +79,7 @@ public class SekretessBusinessService {
             PreKeyBundle consumerPrekeyBundle = getConsumerPrekeyBundle(messageDTO.getConsumer());
             try {
                 sessionBuilder.process(consumerPrekeyBundle);
+                sessionRecord = sekretessInMemorySignalProtocolStore.loadSession(consumerAddress);
             } catch (InvalidKeyException | UntrustedIdentityException e) {
                 logger.error("Exception happened when trying to create session with consumer: {} , {}", messageDTO.getConsumer(), e.getMessage(), e);
                 throw new RuntimeException(e);
@@ -62,10 +91,17 @@ public class SekretessBusinessService {
         try {
             CiphertextMessage ciphertextMessage = sessionCipher.encrypt(messageDTO.getText().getBytes());
             PreKeySignalMessage signalMessage = new PreKeySignalMessage(ciphertextMessage.serialize());
-            sekretessServerClient.sendMessage(username, Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer());
-        } catch (NoSessionException | UntrustedIdentityException | InvalidKeyException | InvalidVersionException |
-                 InvalidMessageException | LegacyMessageException | IOException | InterruptedException e) {
-            logger.error("Exception happened when trying to encrypt message! {}", e.getMessage(), e);
+            String identityKey = sekretessServerClient.sendMessage(username, Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer());
+            IdentityKey idenKey = new IdentityKey(Base64.getDecoder().decode(identityKey));
+            if (!Arrays.equals(sessionRecord.getRemoteIdentityKey().getPublicKey().serialize(), idenKey.getPublicKey().serialize())) {
+                sekretessInMemorySignalProtocolStore.deleteSession(consumerAddress);
+                throw new RetryMessageException("User keys got updated need to resend message!");
+            }
+        } catch (RetryMessageException e) {
+            logger.warn("Retry message request received! {}", e.getMessage());
+            handleRetrySendMessage(messageDTO);
+        } catch (Exception e) {
+            logger.error("Exception happened when trying to send message! {}", e.getMessage(), e);
         }
     }
 
@@ -102,7 +138,7 @@ public class SekretessBusinessService {
                     kemPublicKey,
                     pqSignedPrekeySignature);
 
-        } catch (IOException | InterruptedException | InvalidKeyException e) {
+        } catch (Exception e) {
             logger.error("exception happened! {}", e.getMessage(), e);
         }
 
