@@ -22,7 +22,7 @@ app:
     username: ${BUSINESS_USER_NAME:sekretess_test}
     server:
       business:
-        url: ${SEKRETESS_BUSINESS_SERVER_URL:http://business.sekretess.co:8082}
+        url: ${SEKRETESS_BUSINESS_SERVER_URL:https://business.sekretess.co}
       consumer:
-        url: ${SEKRETESS_CONSUMER_SERVER_URL:http://consumer.sekretess.co:8081}
+        url: ${SEKRETESS_CONSUMER_SERVER_URL:https://consumer.sekretess.co}
 
