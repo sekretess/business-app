@@ -1,6 +1,7 @@
 package com.sekretess.client;
 
 import com.google.gson.Gson;
+import com.sekretess.client.request.SendAdMessage;
 import com.sekretess.client.request.SendMessage;
 import com.sekretess.client.response.ConsumerKeysResponse;
 import com.sekretess.client.response.SendMessageResponse;
@@ -33,9 +34,9 @@ public class SekretessServerClient {
         this.consumerServerUrl = consumerServerUrl;
     }
 
-    public String sendMessage(String sender, String text, String consumer) throws IOException, InterruptedException {
+    public String sendMessage(String sender, String text, String consumer, String type) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer))))
+                .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer, type))))
                 .uri(URI.create(businessServerUrl + "/api/v1/businesses/messages"))
                 .header("Content-Type", "application/json")
                 .build();
@@ -53,6 +54,22 @@ public class SekretessServerClient {
 
     }
 
+    public void sendAdMessage(String text,String exchangeName) throws IOException, InterruptedException {
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendAdMessage(text, exchangeName))))
+                .uri(URI.create(businessServerUrl + "/api/v1/businesses/ads"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 202) {
+            logger.error("Failed to send ads message to exchange! {}", exchangeName);
+            throw new RuntimeException("Failed to send ads message to exchange!" + exchangeName);
+        } else {
+            logger.info("Successfully forwarded ads message to exchange! {}", exchangeName);
+        }
+    }
+
     public ConsumerKeysResponse getConsumerKeys(String consumer) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -66,8 +83,8 @@ public class SekretessServerClient {
             logger.info("Received response from server for consumer: {}, {}", consumer, consumerKeysResponse);
             return consumerKeysResponse;
         } else {
-            logger.error("Exception happened! {}", response.statusCode());
-            throw new RuntimeException();
+            logger.error("Exception happened when getting consumer keys! {}", response.statusCode());
+            throw new RuntimeException("Exception happened! "+ response.statusCode());
         }
     }
 
