@@ -1,5 +1,6 @@
 package com.sekretess.controller;
 
+import com.sekretess.dto.AdsMessageDTO;
 import com.sekretess.dto.MessageDTO;
 import com.sekretess.service.SekretessBusinessService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,13 @@ public class SekretessBusinessController {
     @PostMapping("/messages")
     public ResponseEntity<String> sendMessage(@RequestBody MessageDTO message) {
         this.sekretessBusinessService.handleSendMessage(message);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/ads/messages")
+    public ResponseEntity<String> sendAdsMessage(@RequestBody AdsMessageDTO message) {
+        this.sekretessBusinessService.handleSendAdsMessage(message);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 

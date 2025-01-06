@@ -4,11 +4,27 @@ public class SendMessage {
     private String text;
     private String sender;
     private String consumerExchange;
+    private String type;
 
     public SendMessage(String text, String sender, String consumerExchange) {
         this.text = text;
         this.sender = sender;
         this.consumerExchange = consumerExchange;
+    }
+
+    public SendMessage(String text, String sender, String consumerExchange,String type) {
+        this.text = text;
+        this.sender = sender;
+        this.consumerExchange = consumerExchange;
+        this.type=type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getText() {

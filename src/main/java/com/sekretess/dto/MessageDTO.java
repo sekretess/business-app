@@ -7,6 +7,16 @@ public class MessageDTO {
 
     private String text;
     private String consumer;
+    private String type;
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getText() {
         return text;
