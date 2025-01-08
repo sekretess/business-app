@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/sekretess/sekretess-business-app/compare/v1.1.0...v1.1.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* update file ([c504eb8](https://github.com/sekretess/sekretess-business-app/commit/c504eb8ca4940cd14c4bf975d361ba243a15023b))
+
 ## [1.1.0](https://github.com/sekretess/sekretess-business-app/compare/v1.0.0...v1.1.0) (2025-01-08)
 
 
