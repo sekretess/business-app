@@ -3,7 +3,7 @@ spring:
     name: sekretess-business-app
   h2:
     console:
-      enabled: true
+      enabled: false
       path: /h2-ui
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:./sekretess-business-app-db}
