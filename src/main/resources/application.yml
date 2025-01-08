@@ -17,13 +17,13 @@ spring:
     generate-ddl: true
     defer-datasource-initialization: true
   rabbitmq:
-    addresses: amqps://pveuzxms:EOv0mSE295ZAir9LmIK8fLEqKKmX7-V6@kangaroo.rmq.cloudamqp.com/pveuzxms
+    addresses: ${AMQP_CONNECTION_URL:amqps://pveuzxms:EOv0mSE295ZAir9LmIK8fLEqKKmX7-V6@kangaroo.rmq.cloudamqp.com/pveuzxms}
 
 
 
 app:
   config:
-    username: ${BUSINESS_USER_NAME:postnord}
+    username: ${BUSINESS_USER_NAME:sekretess_test}
     server:
       business:
         url: ${SEKRETESS_BUSINESS_SERVER_URL:https://business.sekretess.co}
