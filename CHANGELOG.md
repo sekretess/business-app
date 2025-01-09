@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/sekretess/sekretess-business-app/compare/v1.1.1...v1.1.2) (2025-01-09)
+
+
+### Bug Fixes
+
+* add build step ([34e8d9f](https://github.com/sekretess/sekretess-business-app/commit/34e8d9f14cecd349e1f83103fba1ad520e32117c))
+
 ## [1.1.1](https://github.com/sekretess/sekretess-business-app/compare/v1.1.0...v1.1.1) (2025-01-08)
 
 
