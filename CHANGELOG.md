@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/sekretess/sekretess-business-app/compare/v1.1.2...v1.1.3) (2025-01-10)
+
+
+### Bug Fixes
+
+* remove quotes after getting message from queue ([1688a43](https://github.com/sekretess/sekretess-business-app/commit/1688a4345b01c49443f696f6cf5f1c1114f06c1e))
+
 ## [1.1.2](https://github.com/sekretess/sekretess-business-app/compare/v1.1.1...v1.1.2) (2025-01-09)
 
 
