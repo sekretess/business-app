@@ -19,6 +19,7 @@ public class RabbitMQConsumer {
 
     @RabbitListener(queues = "#{@queueName}")
     public void listen(String message) {
-        sekretessBusinessService.sendSenderKeyDistributionMessage(message);
+        String processedMessage = message.replaceAll("^\"|\"$", "");
+        sekretessBusinessService.sendSenderKeyDistributionMessage(processedMessage);
     }
 }
