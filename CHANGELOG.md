@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/sekretess/sekretess-business-app/compare/v1.1.3...v1.2.0) (2025-01-11)
+
+
+### Features
+
+* set message type in private flows ([095cdda](https://github.com/sekretess/sekretess-business-app/commit/095cdda62158db5db8d058a4f77f703ed500ae3b))
+
+
+### Bug Fixes
+
+* bump signal lib ([adebf1f](https://github.com/sekretess/sekretess-business-app/commit/adebf1f4c0a63c60ead2dcd8d7f0d9b72dd8713a))
+* update spring version ([1dace92](https://github.com/sekretess/sekretess-business-app/commit/1dace9204d33d35baee436808f2d639a5cafaeb2))
+
 ## [1.1.3](https://github.com/sekretess/sekretess-business-app/compare/v1.1.2...v1.1.3) (2025-01-10)
 
 
