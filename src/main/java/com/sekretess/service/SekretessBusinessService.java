@@ -144,7 +144,7 @@ public class SekretessBusinessService {
             }
 
             MessageDTO messageDTO = new MessageDTO();
-            messageDTO.setType(MessageType.ADS.name());
+            messageDTO.setType(MessageType.KEY_DIST.name());
             messageDTO.setConsumer(consumer);
             messageDTO.setText(Base64.getEncoder().encodeToString(sentBusinessDistributionMessage.serialize()));
             handleSendMessage(messageDTO);

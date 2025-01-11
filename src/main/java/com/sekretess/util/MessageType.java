@@ -1,5 +1,6 @@
 package com.sekretess.util;
 
 public enum MessageType {
-    ADS
+    PRIVATE,
+    KEY_DIST
 }

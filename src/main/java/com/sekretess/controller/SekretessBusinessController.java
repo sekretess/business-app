@@ -3,6 +3,7 @@ package com.sekretess.controller;
 import com.sekretess.dto.AdsMessageDTO;
 import com.sekretess.dto.MessageDTO;
 import com.sekretess.service.SekretessBusinessService;
+import com.sekretess.util.MessageType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class SekretessBusinessController {
 
     @PostMapping("/messages")
     public ResponseEntity<String> sendMessage(@RequestBody MessageDTO message) {
+        message.setType(MessageType.PRIVATE.name());
         this.sekretessBusinessService.handleSendMessage(message);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
