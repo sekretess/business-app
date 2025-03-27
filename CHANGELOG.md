@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/sekretess/sekretess-business-app/compare/v1.2.0...v1.3.0) (2025-03-27)
+
+
+### Features
+
+* update package name ([80baffe](https://github.com/sekretess/sekretess-business-app/commit/80baffe1970f9b2a595bbb31f66babe557f3cc2e))
+
 ## [1.2.0](https://github.com/sekretess/sekretess-business-app/compare/v1.1.3...v1.2.0) (2025-01-11)
 
 
