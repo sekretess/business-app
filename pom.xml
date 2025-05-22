@@ -21,6 +21,7 @@
         <bcprov-jdk18on.version>1.80</bcprov-jdk18on.version>
         <bcpkix-jdk18on.version>1.80</bcpkix-jdk18on.version>
         <java-jwt.version>4.5.0</java-jwt.version>
+        <caffeine.version>3.2.0</caffeine.version>
     </properties>
     <dependencies>
         <dependency>
@@ -68,6 +69,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
         </dependency>
 
         <!--security-->

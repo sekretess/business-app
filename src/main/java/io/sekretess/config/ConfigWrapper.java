@@ -27,8 +27,6 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -48,8 +46,6 @@ public class ConfigWrapper {
     private final String rabbitMQHost;
     private final int rabbitMQPort;
     private final String rabbitMqVhost;
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigWrapper.class);
 
     public ConfigWrapper(IdentityKeyRepository identityKeyRepository,
@@ -146,9 +142,7 @@ public class ConfigWrapper {
         rabbitFactory.setCredentialsProvider(new CredentialsProvider() {
             @Override
             public String getUsername() {
-                String token = tokenProvider.fetchToken();
-                DecodedJWT jwt = JWT.decode(token);
-                return jwt.getClaim("preferred_username").asString();
+                return tokenProvider.getUserName();
             }
 
             @Override
