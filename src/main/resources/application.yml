@@ -17,16 +17,29 @@ spring:
     generate-ddl: true
     defer-datasource-initialization: true
   rabbitmq:
-    addresses: ${AMQP_CONNECTION_URL:amqps://pveuzxms:EOv0mSE295ZAir9LmIK8fLEqKKmX7-V6@kangaroo.rmq.cloudamqp.com/pveuzxms}
+    ssl:
+      enabled: true
 
 
 
 app:
   config:
-    username: ${BUSINESS_USER_NAME:sekretess_test}
+    username: ${BUSINESS_USER_NAME:budbee}
     server:
       business:
-        url: ${SEKRETESS_BUSINESS_SERVER_URL:https://business.sekretess.co}
+        url: ${SEKRETESS_BUSINESS_SERVER_URL:https://business.sekretess.net}
       consumer:
-        url: ${SEKRETESS_CONSUMER_SERVER_URL:https://consumer.sekretess.co}
+        url: ${SEKRETESS_CONSUMER_SERVER_URL:https://consumer.sekretess.io}
+    idp:
+      url: ${IDENTITY_PROVIDER_URL:https://auth.sekretess.net/realms/business/protocol/openid-connect/token}
+      clientId: ${BUSINESS_USER_NAME:business_client}
+      certificate: ${USER_CERTIFICATE_PATH:/Users/naziralijanov/sekretess/client.crt}
+      key: ${USER_CERTIFICATE_KEY:/Users/naziralijanov/sekretess/client.key}
+      password: ${USER_CERTIFICATE_PASSWORD:test}
+    rabbitmq:
+      host: ${AMQP_HOST:mq.sekretess.net}
+      port: ${AMQP_PORT:5671}
+      vhost: ${AMQP_VIRTUAL_HOST:sekretess}
+
+
 

@@ -5,6 +5,7 @@ import io.sekretess.client.request.SendAdMessage;
 import io.sekretess.client.request.SendMessage;
 import io.sekretess.client.response.ConsumerKeysResponse;
 import io.sekretess.client.response.SendMessageResponse;
+import io.sekretess.util.TokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,18 +21,21 @@ import java.net.http.HttpResponse;
 @Component
 public class SekretessServerClient {
 
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
     private final String businessServerUrl;
     private final String consumerServerUrl;
+    private final TokenProvider tokenProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(SekretessServerClient.class);
 
     public SekretessServerClient(HttpClient httpClient,
+                                 TokenProvider tokenProvider,
                                  @Value("${app.config.server.business.url}") String businessServerUrl,
                                  @Value("${app.config.server.consumer.url}") String consumerServerUrl) {
         this.httpClient = httpClient;
         this.businessServerUrl = businessServerUrl;
         this.consumerServerUrl = consumerServerUrl;
+        this.tokenProvider = tokenProvider;
     }
 
     public String sendMessage(String sender, String text, String consumer, String type) throws IOException, InterruptedException {
@@ -39,6 +43,7 @@ public class SekretessServerClient {
                 .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer, type))))
                 .uri(URI.create(businessServerUrl + "/api/v1/businesses/messages"))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + tokenProvider.fetchToken())
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
@@ -54,11 +59,12 @@ public class SekretessServerClient {
 
     }
 
-    public void sendAdMessage(String text,String exchangeName) throws IOException, InterruptedException {
+    public void sendAdMessage(String text, String exchangeName) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendAdMessage(text, exchangeName))))
                 .uri(URI.create(businessServerUrl + "/api/v1/businesses/ads"))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + tokenProvider.fetchToken())
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
@@ -75,6 +81,7 @@ public class SekretessServerClient {
                 .GET()
                 .uri(URI.create(consumerServerUrl + "/api/v1/consumers/" + consumer + "/key-bundles"))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + tokenProvider.fetchToken())
                 .build();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         if (HttpStatus.OK.value() == response.statusCode()) {
@@ -84,7 +91,7 @@ public class SekretessServerClient {
             return consumerKeysResponse;
         } else {
             logger.error("Exception happened when getting consumer keys! {}", response.statusCode());
-            throw new RuntimeException("Exception happened! "+ response.statusCode());
+            throw new RuntimeException("Exception happened! " + response.statusCode());
         }
     }
 

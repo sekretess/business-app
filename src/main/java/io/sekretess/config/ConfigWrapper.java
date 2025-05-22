@@ -7,6 +7,7 @@ import io.sekretess.repository.GroupSessionRepository;
 import io.sekretess.repository.IdentityKeyRepository;
 import io.sekretess.repository.SekretessInMemorySignalProtocolStore;
 import io.sekretess.repository.SessionRepository;
+import io.sekretess.util.TokenProvider;
 import org.signal.libsignal.protocol.IdentityKey;
 import org.signal.libsignal.protocol.IdentityKeyPair;
 import org.signal.libsignal.protocol.InvalidMessageException;
@@ -20,11 +21,15 @@ import org.signal.libsignal.protocol.state.SessionRecord;
 import org.signal.libsignal.protocol.util.KeyHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
-import java.net.http.HttpClient;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +42,31 @@ public class ConfigWrapper {
     private final SessionRepository sessionRepository;
     private final GroupSessionRepository groupSessionRepository;
     private final String username;
+    private final TokenProvider tokenProvider;
+    private final String rabbitMQHost;
+    private final int rabbitMQPort;
+    private final String rabbitMqVhost;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigWrapper.class);
 
-    public ConfigWrapper(IdentityKeyRepository identityKeyRepository, SessionRepository sessionRepository, GroupSessionRepository groupSessionRepository,
-                         @Value("${app.config.username}") String username) {
+    public ConfigWrapper(IdentityKeyRepository identityKeyRepository,
+                         SessionRepository sessionRepository,
+                         GroupSessionRepository groupSessionRepository,
+                         TokenProvider tokenProvider,
+                         @Value("${app.config.username}") String username,
+                         @Value("${app.config.rabbitmq.host}") String rabbitMQHost,
+                         @Value("${app.config.rabbitmq.port}") int rabbitMQPort,
+                         @Value("${app.config.rabbitmq.vhost}") String rabbitMqVhost) {
         this.identityKeyRepository = identityKeyRepository;
         this.sessionRepository = sessionRepository;
         this.groupSessionRepository = groupSessionRepository;
         this.username = username;
+        this.tokenProvider = tokenProvider;
+        this.rabbitMQHost = rabbitMQHost;
+        this.rabbitMQPort = rabbitMQPort;
+        this.rabbitMqVhost = rabbitMqVhost;
+
     }
 
     @Bean
@@ -113,13 +135,21 @@ public class ConfigWrapper {
     }
 
     @Bean
-    public HttpClient httpClient() {
-        return HttpClient.newBuilder().build();
+    public CachingConnectionFactory connectionFactory() throws NoSuchAlgorithmException, KeyManagementException {
+        CachingConnectionFactory factory = new CachingConnectionFactory(this.rabbitMQHost);
+        factory.setVirtualHost(this.rabbitMqVhost);
+        factory.setPort(this.rabbitMQPort);
+        String token = tokenProvider.fetchToken();
+        DecodedJWT jwt = JWT.decode(token);
+
+        factory.setUsername(jwt.getClaim("preferred_username").asString());
+        factory.setPassword(token);
+        factory.getRabbitConnectionFactory().useSslProtocol();
+        return factory;
     }
 
     @Bean
     public String queueName() {
         return username + "_business";
     }
-
 }
