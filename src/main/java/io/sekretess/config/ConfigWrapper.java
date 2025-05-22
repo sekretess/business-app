@@ -1,5 +1,7 @@
 package io.sekretess.config;
 
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.impl.CredentialsProvider;
 import io.sekretess.model.GroupSessionModel;
 import io.sekretess.model.IdentityKeyModel;
 import io.sekretess.model.SessionModel;
@@ -136,16 +138,26 @@ public class ConfigWrapper {
 
     @Bean
     public CachingConnectionFactory connectionFactory() throws NoSuchAlgorithmException, KeyManagementException {
-        CachingConnectionFactory factory = new CachingConnectionFactory(this.rabbitMQHost);
-        factory.setVirtualHost(this.rabbitMqVhost);
-        factory.setPort(this.rabbitMQPort);
-        String token = tokenProvider.fetchToken();
-        DecodedJWT jwt = JWT.decode(token);
+        ConnectionFactory rabbitFactory = new ConnectionFactory();
+        rabbitFactory.setHost(this.rabbitMQHost);
+        rabbitFactory.setPort(this.rabbitMQPort);
+        rabbitFactory.setVirtualHost(this.rabbitMqVhost);
+        rabbitFactory.useSslProtocol();
+        rabbitFactory.setCredentialsProvider(new CredentialsProvider() {
+            @Override
+            public String getUsername() {
+                String token = tokenProvider.fetchToken();
+                DecodedJWT jwt = JWT.decode(token);
+                return jwt.getClaim("preferred_username").asString();
+            }
 
-        factory.setUsername(jwt.getClaim("preferred_username").asString());
-        factory.setPassword(token);
-        factory.getRabbitConnectionFactory().useSslProtocol();
-        return factory;
+            @Override
+            public String getPassword() {
+                return tokenProvider.fetchToken();
+            }
+        });
+
+        return new CachingConnectionFactory(rabbitFactory);
     }
 
     @Bean
