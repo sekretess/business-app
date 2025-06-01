@@ -24,7 +24,7 @@ spring:
 
 app:
   config:
-    username: ${BUSINESS_USER_NAME:budbee}
+    username: ${BUSINESS_USER_NAME:sekretess_test}
     server:
       business:
         url: ${SEKRETESS_BUSINESS_SERVER_URL:https://business.sekretess.net}
@@ -32,9 +32,9 @@ app:
         url: ${SEKRETESS_CONSUMER_SERVER_URL:https://consumer.sekretess.io}
     idp:
       url: ${IDENTITY_PROVIDER_URL:https://auth.sekretess.net/realms/business/protocol/openid-connect/token}
-      clientId: ${BUSINESS_USER_NAME:business_client}
-      certificate: ${USER_CERTIFICATE_PATH:/Users/naziralijanov/sekretess/client.crt}
-      key: ${USER_CERTIFICATE_KEY:/Users/naziralijanov/sekretess/client.key}
+      clientId: ${IDP_CLIENT_ID:business_client}
+      certificate: ${USER_CERTIFICATE_PATH:path_to_client_cert/client.crt}
+      key: ${USER_CERTIFICATE_KEY:path_to_client_key/client.key}
       password: ${USER_CERTIFICATE_PASSWORD:test}
     rabbitmq:
       host: ${AMQP_HOST:mq.sekretess.net}
