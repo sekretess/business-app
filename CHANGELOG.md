@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/sekretess/sekretess-business-app/compare/v1.3.0...v1.4.0) (2025-06-01)
+
+
+### Features
+
+* add custom credential provider to handle re-connect ([b8b8ad8](https://github.com/sekretess/sekretess-business-app/commit/b8b8ad8a89810ab9444b9371f8858ae8607fe40b))
+* add logic to fetch token with certs ([7817f1c](https://github.com/sekretess/sekretess-business-app/commit/7817f1c88e8c5bf9be45b21e1dfb693a5934e693))
+* cache token in memory ([966864f](https://github.com/sekretess/sekretess-business-app/commit/966864f6bbf4b899d6493413ba62dd7819ddfded))
+
+
+### Bug Fixes
+
+* update idp clientId ([dd8c301](https://github.com/sekretess/sekretess-business-app/commit/dd8c3016174bd9e739c14044f2f902bc6e6eb33f))
+
 ## [1.3.0](https://github.com/sekretess/sekretess-business-app/compare/v1.2.0...v1.3.0) (2025-03-27)
 
 
