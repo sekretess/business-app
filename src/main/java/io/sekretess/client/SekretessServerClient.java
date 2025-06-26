@@ -38,9 +38,9 @@ public class SekretessServerClient {
         this.tokenProvider = tokenProvider;
     }
 
-    public String sendMessage(String sender, String text, String consumer, String type) throws IOException, InterruptedException {
+    public String sendMessage(String text, String consumer, String type) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text, sender, consumer, type))))
+                .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(new SendMessage(text,consumer, type))))
                 .uri(URI.create(businessServerUrl + "/api/v1/businesses/messages"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + tokenProvider.fetchToken())

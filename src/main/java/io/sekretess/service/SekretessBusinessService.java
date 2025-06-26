@@ -72,7 +72,7 @@ public class SekretessBusinessService {
         try {
             CiphertextMessage ciphertextMessage = sessionCipher.encrypt(messageDTO.getText().getBytes());
             PreKeySignalMessage signalMessage = new PreKeySignalMessage(ciphertextMessage.serialize());
-            sekretessServerClient.sendMessage(username, Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer(), messageDTO.getType());
+            sekretessServerClient.sendMessage(Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer(), messageDTO.getType());
         } catch (Exception e) {
             logger.error("Exception happened when trying to send message! {}", e.getMessage(), e);
         }
@@ -100,7 +100,7 @@ public class SekretessBusinessService {
         try {
             CiphertextMessage ciphertextMessage = sessionCipher.encrypt(messageDTO.getText().getBytes());
             PreKeySignalMessage signalMessage = new PreKeySignalMessage(ciphertextMessage.serialize());
-            String identityKey = sekretessServerClient.sendMessage(username, Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer(), messageDTO.getType());
+            String identityKey = sekretessServerClient.sendMessage(Base64.getEncoder().encodeToString(signalMessage.serialize()), messageDTO.getConsumer(), messageDTO.getType());
             IdentityKey idenKey = new IdentityKey(Base64.getDecoder().decode(identityKey));
             if (!Arrays.equals(sessionRecord.getRemoteIdentityKey().getPublicKey().serialize(), idenKey.getPublicKey().serialize())) {
                 sekretessInMemorySignalProtocolStore.deleteSession(consumerAddress);
