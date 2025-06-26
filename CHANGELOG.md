@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.1](https://github.com/sekretess/sekretess-business-app/compare/v1.4.0...v1.4.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* exclude field from swagger ([c04fafe](https://github.com/sekretess/sekretess-business-app/commit/c04fafe59e93e633cc2999db3c46272942d87ee8))
+* remove sendername from dtos ([5a17147](https://github.com/sekretess/sekretess-business-app/commit/5a171479bb696f895f3cf87b948a4ca190aade6f))
+* update signal protocol version ([a98c48e](https://github.com/sekretess/sekretess-business-app/commit/a98c48eb4c8c668fcd8a641f53ba6f965d6ff9ca))
+
 ## [1.4.0](https://github.com/sekretess/sekretess-business-app/compare/v1.3.0...v1.4.0) (2025-06-01)
 
 
