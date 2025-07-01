@@ -9,7 +9,7 @@
     </parent>
     <groupId>io.sekretess</groupId>
     <artifactId>sekretess-business-app</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3-SNAPSHOT</version>
     <name>sekretess-business-app</name>
     <description>App for businesses to send encrypted messages</description>
     <properties>
