@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/sekretess/sekretess-business-app/compare/v1.4.1...v1.4.2) (2025-07-01)
+
+
+### Bug Fixes
+
+* use light docker image ([6f075ff](https://github.com/sekretess/sekretess-business-app/commit/6f075ffa598e325a823a3d486b0d5db976cf7b12))
+
 ## [1.4.1](https://github.com/sekretess/sekretess-business-app/compare/v1.4.0...v1.4.1) (2025-06-26)
 
 
