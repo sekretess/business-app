@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/sekretess/sekretess-business-app/compare/v1.4.2...v1.5.0) (2025-07-15)
+
+
+### Features
+
+* update consumerkeyresponse dto ([dca739c](https://github.com/sekretess/sekretess-business-app/commit/dca739cafd1da43e44dc9912ecc8d8bd00fd27f4))
+
 ## [1.4.2](https://github.com/sekretess/sekretess-business-app/compare/v1.4.1...v1.4.2) (2025-07-01)
 
 
