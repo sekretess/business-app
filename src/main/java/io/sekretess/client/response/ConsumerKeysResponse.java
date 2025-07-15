@@ -5,12 +5,12 @@ public class ConsumerKeysResponse {
     private String username;
     private String ik;
     private String opk;
-    private int regId;
+    private int regID;
     private String spkSignature;
     private String spk;
-    private String spkId;
-    private String pqspk;
-    private String pqspkID;
+    private String spkID;
+    private String pqSpk;
+    private String pqSpkID;
     private String pqSpkSignature;
 
     public String getUsername() {
@@ -37,12 +37,12 @@ public class ConsumerKeysResponse {
         this.opk = opk;
     }
 
-    public int getRegId() {
-        return regId;
+    public int getRegID() {
+        return regID;
     }
 
-    public void setRegId(int regId) {
-        this.regId = regId;
+    public void setRegID(int regID) {
+        this.regID = regID;
     }
 
     public String getSpkSignature() {
@@ -61,28 +61,28 @@ public class ConsumerKeysResponse {
         this.spk = spk;
     }
 
-    public String getSpkId() {
-        return spkId;
+    public String getSpkID() {
+        return spkID;
     }
 
-    public void setSpkId(String spkId) {
-        this.spkId = spkId;
+    public void setSpkID(String spkID) {
+        this.spkID = spkID;
     }
 
-    public String getPqspk() {
-        return pqspk;
+    public String getPqSpk() {
+        return pqSpk;
     }
 
-    public void setPqspk(String pqspk) {
-        this.pqspk = pqspk;
+    public void setPqSpk(String pqSpk) {
+        this.pqSpk = pqSpk;
     }
 
-    public String getPqspkID() {
-        return pqspkID;
+    public String getPqSpkID() {
+        return pqSpkID;
     }
 
-    public void setPqspkID(String pqspkID) {
-        this.pqspkID = pqspkID;
+    public void setPqSpkID(String pqSpkID) {
+        this.pqSpkID = pqSpkID;
     }
 
     public String getPqSpkSignature() {
@@ -99,12 +99,12 @@ public class ConsumerKeysResponse {
                 "username='" + username + '\'' +
                 ", ik='" + ik + '\'' +
                 ", opk='" + opk + '\'' +
-                ", regId=" + regId +
+                ", regId=" + regID +
                 ", spkSignature='" + spkSignature + '\'' +
                 ", spk='" + spk + '\'' +
-                ", spkId='" + spkId + '\'' +
-                ", pqspk='" + pqspk + '\'' +
-                ", pqspkID='" + pqspkID + '\'' +
+                ", spkId='" + spkID + '\'' +
+                ", pqspk='" + pqSpk + '\'' +
+                ", pqspkID='" + pqSpkID + '\'' +
                 ", pqSpkSignature='" + pqSpkSignature + '\'' +
                 '}';
     }

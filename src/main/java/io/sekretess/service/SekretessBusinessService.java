@@ -162,12 +162,12 @@ public class SekretessBusinessService {
             String[] preKeyRecords = consumerKeysResponse.getOpk().split(":");
             String preKeyRecordValue = preKeyRecords[1];
             int preKeyId = Integer.parseInt(preKeyRecords[0]);
-            int regId = consumerKeysResponse.getRegId();
+            int regId = consumerKeysResponse.getRegID();
             String identityKey = consumerKeysResponse.getIk();
-            int signedPreKeyId = Integer.parseInt(consumerKeysResponse.getSpkId());
+            int signedPreKeyId = Integer.parseInt(consumerKeysResponse.getSpkID());
             byte[] signedPreKeySignature = Base64.getDecoder().decode(consumerKeysResponse.getSpkSignature());
-            String pqSignedPrekey = consumerKeysResponse.getPqspk();
-            int pqSignedPrekeyId = Integer.parseInt(consumerKeysResponse.getPqspkID());
+            String pqSignedPrekey = consumerKeysResponse.getPqSpk();
+            int pqSignedPrekeyId = Integer.parseInt(consumerKeysResponse.getPqSpkID());
             byte[] pqSignedPrekeySignature = Base64.getDecoder().decode(consumerKeysResponse.getPqSpkSignature());
 
             ECPublicKey signPrekey = new ECPublicKey(Base64.getDecoder().decode(signedPreKey));
