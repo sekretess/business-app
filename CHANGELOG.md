@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/sekretess/sekretess-business-app/compare/v1.5.0...v1.5.1) (2025-08-26)
+
+
+### Bug Fixes
+
+* Update privatekey parsing logic ([b3d4286](https://github.com/sekretess/sekretess-business-app/commit/b3d4286e4164eee6b1b2422e912159dc8e033b08))
+
 ## [1.5.0](https://github.com/sekretess/sekretess-business-app/compare/v1.4.2...v1.5.0) (2025-07-15)
 
 
