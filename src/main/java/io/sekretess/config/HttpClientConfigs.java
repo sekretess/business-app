@@ -1,6 +1,7 @@
 package io.sekretess.config;
 
 import io.sekretess.util.PasswordGenerator;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
@@ -66,7 +67,7 @@ public class HttpClientConfigs {
                             .getPrivateKey(encryptedPrivateKeyInfo.decryptPrivateKeyInfo(decryptorProvider));
 
                 } else {
-                    privateKey = new JcaPEMKeyConverter().setProvider("BC").getKeyPair((PEMKeyPair) object).getPrivate();
+                    privateKey = new JcaPEMKeyConverter().setProvider("BC").getPrivateKey((PrivateKeyInfo) object);
                 }
             }
 
