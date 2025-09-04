@@ -61,7 +61,7 @@ public class SekretessBusinessService {
         PreKeyBundle consumerPrekeyBundle = getConsumerPrekeyBundle(messageDTO.getConsumer());
         sekretessInMemorySignalProtocolStore.saveIdentity(consumerAddress, consumerPrekeyBundle.getIdentityKey());
         try {
-            sessionBuilder.process(consumerPrekeyBundle);
+            sessionBuilder.process(consumerPrekeyBundle, UsePqRatchet.YES);
             sekretessInMemorySignalProtocolStore.loadSession(consumerAddress);
         } catch (InvalidKeyException | UntrustedIdentityException e) {
             logger.error("Exception happened when trying to create session with consumer: {} , {}", messageDTO.getConsumer(), e.getMessage(), e);
@@ -87,7 +87,7 @@ public class SekretessBusinessService {
             SessionBuilder sessionBuilder = new SessionBuilder(sekretessInMemorySignalProtocolStore, consumerAddress);
             PreKeyBundle consumerPrekeyBundle = getConsumerPrekeyBundle(messageDTO.getConsumer());
             try {
-                sessionBuilder.process(consumerPrekeyBundle);
+                sessionBuilder.process(consumerPrekeyBundle, UsePqRatchet.YES);
                 sessionRecord = sekretessInMemorySignalProtocolStore.loadSession(consumerAddress);
             } catch (InvalidKeyException | UntrustedIdentityException e) {
                 logger.error("Exception happened when trying to create session with consumer: {} , {}", messageDTO.getConsumer(), e.getMessage(), e);

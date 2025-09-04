@@ -14,7 +14,6 @@ import org.signal.libsignal.protocol.IdentityKey;
 import org.signal.libsignal.protocol.IdentityKeyPair;
 import org.signal.libsignal.protocol.InvalidMessageException;
 import org.signal.libsignal.protocol.SignalProtocolAddress;
-import org.signal.libsignal.protocol.ecc.Curve;
 import org.signal.libsignal.protocol.ecc.ECKeyPair;
 import org.signal.libsignal.protocol.groups.GroupSessionBuilder;
 import org.signal.libsignal.protocol.groups.state.SenderKeyRecord;
@@ -72,7 +71,7 @@ public class ConfigWrapper {
         Optional<IdentityKeyModel> optionalIdentityKeyModel = identityKeyRepository.findById(username);
         if (optionalIdentityKeyModel.isEmpty()) {
             LOGGER.info("No identityKeys saved for the user: {}. Creating new one!", username);
-            ECKeyPair ecKeyPair = Curve.generateKeyPair();
+            ECKeyPair ecKeyPair = ECKeyPair.generate();
             IdentityKeyPair identityKeyPair = new IdentityKeyPair(new IdentityKey(ecKeyPair.getPublicKey()), ecKeyPair.getPrivateKey());
             int registrationId = KeyHelper.generateRegistrationId(false);
             IdentityKeyModel identityKeyModel = new IdentityKeyModel();
