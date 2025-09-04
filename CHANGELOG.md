@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/sekretess/sekretess-business-app/compare/v1.5.1...v1.6.0) (2025-09-04)
+
+
+### Features
+
+* Upgrade to signal latest version ([1124351](https://github.com/sekretess/sekretess-business-app/commit/1124351302ef912c5119ba3c14f76dd6464b8cb9))
+
 ## [1.5.1](https://github.com/sekretess/sekretess-business-app/compare/v1.5.0...v1.5.1) (2025-08-26)
 
 
