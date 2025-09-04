@@ -137,7 +137,6 @@ public class ConfigWrapper {
         rabbitFactory.setHost(this.rabbitMQHost);
         rabbitFactory.setPort(this.rabbitMQPort);
         rabbitFactory.setVirtualHost(this.rabbitMqVhost);
-        rabbitFactory.useSslProtocol();
         rabbitFactory.setCredentialsProvider(new CredentialsProvider() {
             @Override
             public String getUsername() {
