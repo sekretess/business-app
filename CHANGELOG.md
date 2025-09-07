@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://github.com/sekretess/sekretess-business-app/compare/v1.6.0...v1.6.1) (2025-09-07)
+
+
+### Bug Fixes
+
+* rabbitmq ssl config ([be38202](https://github.com/sekretess/sekretess-business-app/commit/be38202f3b56c4b8639a64ee5864b45a60c530f4))
+* remove ssl config for trusting all servers ([1966f9a](https://github.com/sekretess/sekretess-business-app/commit/1966f9a142fd51347bfb7029162f814928fc8b07))
+
 ## [1.6.0](https://github.com/sekretess/sekretess-business-app/compare/v1.5.1...v1.6.0) (2025-09-04)
 
 
