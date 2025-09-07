@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -137,6 +138,8 @@ public class ConfigWrapper {
         rabbitFactory.setHost(this.rabbitMQHost);
         rabbitFactory.setPort(this.rabbitMQPort);
         rabbitFactory.setVirtualHost(this.rabbitMqVhost);
+        SSLContext sslContext = SSLContext.getDefault();
+        rabbitFactory.useSslProtocol(sslContext);
         rabbitFactory.setCredentialsProvider(new CredentialsProvider() {
             @Override
             public String getUsername() {
