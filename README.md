@@ -16,13 +16,13 @@
 - License
 
 ## Overview
-This Spring Boot application provides a secure backend to send, store and retrieve encrypted messages for business workflows. It exposes a REST API to encrypt messages for recipients and to decrypt messages when permitted. The project uses Java and Maven.
+This Spring Boot application provides a secure backend to send encrypted messages for business workflows.
+It exposes a REST API to encrypt messages for recipients and to decrypt messages when permitted. The project uses Spring Boot and Maven.
 
 ## Features
-- RESTful API for sending and retrieving messages
-- Message encryption using configurable algorithms (symmetric and/or asymmetric)
-- Secure key management configuration
-- Persistence via a simple repository (JPA)
+- RESTful API for sending messages
+  <- Secure key management configuration
+>- Persistence via a simple repository (JPA)
 - Unit and integration test setup
 - Ready for containerized deployment
 
@@ -81,13 +81,20 @@ Response (example):
 Retrieve message (decrypted if requester authorized):
 - GET `/api/messages/{id}`
 
-Example curl (replace host/port accordingly):
+Example curl for private messages(replace host/port accordingly):
 
-    curl -X POST http://localhost:8080/api/messages \
+    curl -X POST http://localhost:8080/api/v1/messages \
       -H "Content-Type: application/json" \
-      -d '{"recipientId":"user-123","payload":"Secret"}'
+      -d '{"text":"You have got important update in your account","sender":"my-company",
+            "consumerExchange":"receiver-name"}'
 
-Authorization headers (JWT/API key) should be used if the project implements auth.
+Example curl for advertisement messages(replace host/port accordingly):
+
+    curl -X POST http://localhost:8080/api/v1/ads \
+      -H "Content-Type: application/json" \
+      -d '{"text":"You have got important update in your account","sender":"my-company",
+            "businessExchange":"companyExchange"}'
+
 
 ## Security & encryption
 - Encryption algorithms and key lengths must follow organizational security standards.
