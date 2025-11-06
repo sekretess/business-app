@@ -21,6 +21,8 @@
         <bcpkix-jdk18on.version>1.80</bcpkix-jdk18on.version>
         <java-jwt.version>4.5.0</java-jwt.version>
         <caffeine.version>3.2.0</caffeine.version>
+        <org-springframework-boot.spring-boot-starter-test.version>3.4.10</org-springframework-boot.spring-boot-starter-test.version>
+        <org-springframework-boot.spring-boot-starter-web.version>3.4.10</org-springframework-boot.spring-boot-starter-web.version>
     </properties>
     <dependencies>
         <dependency>
@@ -97,5 +99,19 @@
             </plugin>
         </plugins>
     </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${org-springframework-boot.spring-boot-starter-test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${org-springframework-boot.spring-boot-starter-web.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
