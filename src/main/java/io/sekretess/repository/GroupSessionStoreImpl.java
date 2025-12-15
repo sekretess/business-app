@@ -16,17 +16,29 @@ public class GroupSessionStoreImpl implements GroupSessionStore {
     }
 
     @Override
-    public void saveGroupSession(String name, int deviceId, String distributionId, String businessDistributionMessage, String sessionRecord) {
+    public void saveGroupSession(String name, int deviceId, String distributionId, String sessionRecord) {
         Optional<GroupSessionModel> optionalGroupSessionModel = groupSessionRepository.findById(name);
         GroupSessionModel groupSessionModel;
         groupSessionModel = optionalGroupSessionModel.orElseGet(GroupSessionModel::new);
         groupSessionModel.setName(name);
         groupSessionModel.setDeviceId(deviceId);
-        groupSessionModel.setDistributionMessage(businessDistributionMessage);
-        groupSessionModel.setDistributionId(distributionId.toString());
+        groupSessionModel.setDistributionId(distributionId);
+        groupSessionModel.setSessionRecord(sessionRecord);
         groupSessionRepository.save(groupSessionModel);
     }
 
+
+    @Override
+    public void saveSendDistributionMessage(String name, int deviceId, String distributionId, String businessDistributionMessage) {
+        Optional<GroupSessionModel> optionalGroupSessionModel = groupSessionRepository.findById(name);
+        GroupSessionModel groupSessionModel;
+        groupSessionModel = optionalGroupSessionModel.orElseGet(GroupSessionModel::new);
+        groupSessionModel.setName(name);
+        groupSessionModel.setDeviceId(deviceId);
+        groupSessionModel.setDistributionId(distributionId);
+        groupSessionModel.setDistributionMessage(businessDistributionMessage);
+        groupSessionRepository.save(groupSessionModel);
+    }
 
     @Override
     public GroupSessionData loadGroupSession(String s) {

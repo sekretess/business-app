@@ -1,5 +1,6 @@
 package io.sekretess.repository;
 
+import io.sekretess.model.IdentityKeyData;
 import io.sekretess.model.IdentityKeyModel;
 import io.sekretess.store.IdentityStore;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class IdentityStoreImpl implements IdentityStore {
             return null;
         }
         IdentityKeyModel identityKeyModel = optionalIdentityKeyModel.get();
-        return new IdentityKeyData(Base64.getDecoder().decode(identityKeyModel.getIdentityKey()),identityKeyModel.getRegistrationId());
+        return new IdentityKeyData(identityKeyModel.getUserName(), Base64.getDecoder().decode(identityKeyModel.getIdentityKey()), identityKeyModel.getRegistrationId());
     }
 
     @Override

@@ -1,9 +1,8 @@
 package io.sekretess.config;
 
 import io.sekretess.manager.SekretessManager;
+import io.sekretess.manager.SekretessManagerFactory;
 import io.sekretess.repository.*;
-import io.sekretess.store.SekretessSignalProtocolStore;
-import io.sekretess.store.SekretessStoreFactory;
 import org.signal.libsignal.protocol.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,13 +23,7 @@ public class ConfigWrapper {
     }
 
     @Bean
-    public SekretessSignalProtocolStore sekretessInMemorySignalProtocolStore() throws InvalidKeyException {
-
-        return SekretessStoreFactory.initialize(identityStore, sessionStore, groupSessionStore);
-    }
-
-    @Bean
-    public SekretessManager sekretessManager(SekretessSignalProtocolStore store) throws InvalidKeyException {
-        return new SekretessManager(store);
+    public SekretessManager sekretessManager() throws InvalidKeyException {
+        return SekretessManagerFactory.createSekretessManager(identityStore, sessionStore, groupSessionStore);
     }
 }
