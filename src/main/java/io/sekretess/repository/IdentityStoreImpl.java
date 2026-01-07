@@ -35,3 +35,4 @@ public class IdentityStoreImpl implements IdentityStore {
         identityKeyRepository.save(identityKeyModel);
     }
 }
+

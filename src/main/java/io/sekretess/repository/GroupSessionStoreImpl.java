@@ -48,7 +48,8 @@ public class GroupSessionStoreImpl implements GroupSessionStore {
             return new GroupSessionData(groupSessionModel.getName(),
                     groupSessionModel.getDeviceId(),
                     groupSessionModel.getDistributionId(),
-                    groupSessionModel.getSessionRecord());
+                    groupSessionModel.getSessionRecord(),
+                    groupSessionModel.getDistributionMessage());
         }
         return null;
     }
