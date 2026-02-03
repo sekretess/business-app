@@ -29,10 +29,4 @@ public class SekretessBusinessController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-
-    @DeleteMapping("/sessions/users/{userName}")
-    public ResponseEntity<String> deleteSession(@PathVariable("userName") String user) {
-        this.sekretessBusinessService.deleteSession(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

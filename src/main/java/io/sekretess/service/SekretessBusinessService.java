@@ -20,11 +20,6 @@ public class SekretessBusinessService {
         this.sekretessManager = sekretessManager;
     }
 
-    public void deleteSession(String user) {
-        logger.info("Delete user session request received! {}", user);
-        sekretessManager.deleteUserSession(user);
-    }
-
     public void handleSendMessage(MessageDTO messageDTO) {
         logger.info("Send message request received to send message to consumer: {}", messageDTO.getConsumer());
         try {
