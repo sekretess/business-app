@@ -1,6 +1,6 @@
 package io.sekretess.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -8,7 +8,6 @@ public class MessageDTO {
 
     private String text;
     private String consumer;
-    @Schema(hidden = true)
     private String type;
 
 
