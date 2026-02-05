@@ -34,7 +34,7 @@ public class SessionStoreImpl implements SessionStore {
                         model.getDeviceId(),
                         model.getSessionRecord()
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
