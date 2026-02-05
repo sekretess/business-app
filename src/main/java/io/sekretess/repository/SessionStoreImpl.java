@@ -6,8 +6,6 @@ import io.sekretess.store.SessionStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class SessionStoreImpl implements SessionStore {
     private final SessionRepository sessionRepository;
