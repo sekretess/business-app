@@ -16,9 +16,6 @@ spring:
       ddl-auto: update
     generate-ddl: true
     defer-datasource-initialization: true
-  rabbitmq:
-    ssl:
-      enabled: true
 
 
 
@@ -36,10 +33,6 @@ app:
       certificate: ${USER_CERTIFICATE_PATH:path_to_client_cert/client.crt}
       key: ${USER_CERTIFICATE_KEY:path_to_client_key/client.key}
       password: ${USER_CERTIFICATE_PASSWORD:test}
-    rabbitmq:
-      host: ${AMQP_HOST:mq.sekretess.net}
-      port: ${AMQP_PORT:5671}
-      vhost: ${AMQP_VIRTUAL_HOST:sekretess}
 
 
 
