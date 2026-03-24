@@ -119,4 +119,44 @@ public class SekretessBusinessControllerTest {
                         .content("invalid json"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void sendMessage_shouldReturnBadRequest_whenTextIsBlank() throws Exception {
+        mockMvc.perform(post("/api/v1/business/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\": \"\", \"consumer\": \"user123\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendMessage_shouldReturnBadRequest_whenConsumerIsBlank() throws Exception {
+        mockMvc.perform(post("/api/v1/business/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\": \"Hello\", \"consumer\": \"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendMessage_shouldReturnBadRequest_whenConsumerIsMissing() throws Exception {
+        mockMvc.perform(post("/api/v1/business/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\": \"Hello\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendAdsMessage_shouldReturnBadRequest_whenTextIsBlank() throws Exception {
+        mockMvc.perform(post("/api/v1/business/ads/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\": \"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendAdsMessage_shouldReturnBadRequest_whenRequestBodyIsInvalid() throws Exception {
+        mockMvc.perform(post("/api/v1/business/ads/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("invalid json"))
+                .andExpect(status().isBadRequest());
+    }
 }
