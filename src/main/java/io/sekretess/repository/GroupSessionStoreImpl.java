@@ -4,6 +4,7 @@ import io.sekretess.model.GroupSessionData;
 import io.sekretess.model.GroupSessionModel;
 import io.sekretess.store.GroupSessionStore;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ public class GroupSessionStoreImpl implements GroupSessionStore {
         this.groupSessionRepository = groupSessionRepository;
     }
 
+    @Transactional
     @Override
     public void saveGroupSession(String name, int deviceId, String distributionId, String sessionRecord) {
         Optional<GroupSessionModel> optionalGroupSessionModel = groupSessionRepository.findById(name);
@@ -28,6 +30,7 @@ public class GroupSessionStoreImpl implements GroupSessionStore {
     }
 
 
+    @Transactional
     @Override
     public void saveSendDistributionMessage(String name, int deviceId, String distributionId, String businessDistributionMessage) {
         Optional<GroupSessionModel> optionalGroupSessionModel = groupSessionRepository.findById(name);

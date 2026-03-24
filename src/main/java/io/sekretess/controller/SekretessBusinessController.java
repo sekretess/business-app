@@ -3,6 +3,7 @@ package io.sekretess.controller;
 import io.sekretess.dto.AdsMessageDTO;
 import io.sekretess.dto.MessageDTO;
 import io.sekretess.service.SekretessBusinessService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +22,13 @@ public class SekretessBusinessController {
     }
 
     @PostMapping("/messages")
-    public ResponseEntity<String> sendMessage(@RequestBody MessageDTO message) {
+    public ResponseEntity<String> sendMessage(@Valid @RequestBody MessageDTO message) {
         this.sekretessBusinessService.handleSendMessage(message);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/ads/messages")
-    public ResponseEntity<String> sendAdsMessage(@RequestBody AdsMessageDTO message) {
+    public ResponseEntity<String> sendAdsMessage(@Valid @RequestBody AdsMessageDTO message) {
         this.sekretessBusinessService.handleSendAdsMessage(message);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

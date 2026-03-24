@@ -4,6 +4,7 @@ import io.sekretess.model.IdentityKeyData;
 import io.sekretess.model.IdentityKeyModel;
 import io.sekretess.store.IdentityStore;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class IdentityStoreImpl implements IdentityStore {
         return new IdentityKeyData(identityKeyModel.getUserName(), Base64.getDecoder().decode(identityKeyModel.getIdentityKey()), identityKeyModel.getRegistrationId());
     }
 
+    @Transactional
     @Override
     public void saveIdentity(String userName, byte[] bytes, int registrationId) {
         IdentityKeyModel identityKeyModel = new IdentityKeyModel();
