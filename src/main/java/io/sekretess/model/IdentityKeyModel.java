@@ -11,10 +11,10 @@ public class IdentityKeyModel {
     @Id
     private String userName;
 
-    @Column(name = "identityKey")
+    @Column(name = "identityKey", nullable = false)
     private String identityKey;
 
-    @Column(name = "registrationId")
+    @Column(name = "registrationId", nullable = false)
     private int registrationId;
 
     public int getRegistrationId() {

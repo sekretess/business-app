@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MessageProcessingException.class)
+    public ResponseEntity<String> handleMessageProcessingException(MessageProcessingException ex) {
+        logger.error("Message processing failed: {}", ex.getMessage(), ex);
+        return new ResponseEntity<>("Message processing failed", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         logger.error("Unhandled runtime exception", ex);

@@ -11,10 +11,10 @@ public class SessionModel {
     @Id
     private String name;
 
-    @Column(name = "deviceId")
+    @Column(name = "deviceId", nullable = false)
     private int deviceId;
 
-    @Column(name = "sessionRecord",length = 10000)
+    @Column(name = "sessionRecord", length = 10000, nullable = false)
     private String sessionRecord;
 
     public String getName() {
