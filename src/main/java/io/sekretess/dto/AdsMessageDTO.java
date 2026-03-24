@@ -1,8 +1,5 @@
 package io.sekretess.dto;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class AdsMessageDTO {
     private String text;
 
