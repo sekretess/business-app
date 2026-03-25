@@ -26,13 +26,10 @@ public class SekretessBusinessService {
         try {
             this.sekretessManager.sendMessageToConsumer(messageDTO.getText(), messageDTO.getConsumer());
         } catch (SessionCreationException e) {
-            logger.error("Session creation failed for consumer: {}", messageDTO.getConsumer(), e);
             throw new MessageProcessingException("Failed to create session for consumer: " + messageDTO.getConsumer(), e);
         } catch (PrekeyBundleException e) {
-            logger.error("Prekey bundle retrieval failed for consumer: {}", messageDTO.getConsumer(), e);
             throw new MessageProcessingException("Failed to retrieve prekey bundle for consumer: " + messageDTO.getConsumer(), e);
         } catch (MessageSendException e) {
-            logger.error("Message delivery failed for consumer: {}", messageDTO.getConsumer(), e);
             throw new MessageProcessingException("Failed to send message to consumer: " + messageDTO.getConsumer(), e);
         }
     }
@@ -43,7 +40,6 @@ public class SekretessBusinessService {
         try {
             this.sekretessManager.sendAdsMessage(adsMessageDTO.getText());
         } catch (MessageSendException e) {
-            logger.error("Ads message delivery failed", e);
             throw new MessageProcessingException("Failed to send ads message", e);
         }
     }
