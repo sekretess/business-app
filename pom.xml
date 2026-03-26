@@ -15,7 +15,7 @@
     <description>App for businesses to send encrypted messages</description>
     <properties>
         <java.version>21</java.version>
-        <sekretess.business.sdk.version>1.2.2</sekretess.business.sdk.version>
+        <sekretess.business.sdk.version>1.2.3</sekretess.business.sdk.version>
     </properties>
     <dependencies>
         <dependency>
