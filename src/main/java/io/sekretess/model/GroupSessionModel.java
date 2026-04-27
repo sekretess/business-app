@@ -4,23 +4,25 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "group_sessions")
+@DynamicUpdate
 public class GroupSessionModel {
     @Id
     private String name;
 
-    @Column(name = "deviceId")
+    @Column(name = "deviceId", nullable = false)
     private int deviceId;
 
-    @Column(name = "distributionId")
+    @Column(name = "distributionId", nullable = false)
     private String distributionId;
 
-    @Column(name = "sessionRecord",length = 10000)
+    @Column(name = "sessionRecord", length = 10000, nullable = false)
     private String sessionRecord;
 
-    @Column(name = "distributionMessage",length = 10000)
+    @Column(name = "distributionMessage", length = 10000)
     private String distributionMessage;
 
     public String getName() {

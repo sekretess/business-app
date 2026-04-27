@@ -4,8 +4,10 @@ import io.sekretess.model.SessionData;
 import io.sekretess.model.SessionModel;
 import io.sekretess.store.SessionStore;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Component
 public class SessionStoreImpl implements SessionStore {
     private final SessionRepository sessionRepository;
@@ -14,6 +16,7 @@ public class SessionStoreImpl implements SessionStore {
         this.sessionRepository = sessionRepository;
     }
 
+    @Transactional
     @Override
     public void saveSession(String consumerName, int deviceId, String base64EncodedRecord) {
         SessionModel sessionModel = new SessionModel();
@@ -35,6 +38,7 @@ public class SessionStoreImpl implements SessionStore {
                 .toList();
     }
 
+    @Transactional
     @Override
     public void deleteSession(String name) {
         sessionRepository.deleteById(name);

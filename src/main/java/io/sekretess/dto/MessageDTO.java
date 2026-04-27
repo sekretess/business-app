@@ -1,23 +1,14 @@
 package io.sekretess.dto;
 
+import jakarta.validation.constraints.NotBlank;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class MessageDTO {
 
+    @NotBlank(message = "Message text cannot be blank")
     private String text;
+
+    @NotBlank(message = "Consumer cannot be blank")
     private String consumer;
-    private String type;
-
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getText() {
         return text;

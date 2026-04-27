@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -110,21 +111,20 @@ class SessionStoreImplTest {
 
     @Test
     void saveSession_shouldOverwriteExistingSession_whenSameNameUsed() {
-        // Given
+        // Given - first save
         String consumerName = "existingConsumer";
-        int newDeviceId = 99;
-        String newRecord = "newEncodedRecord";
+        sessionStore.saveSession(consumerName, 1, "oldRecord");
 
-        // When
-        sessionStore.saveSession(consumerName, newDeviceId, newRecord);
+        // When - second save with same name
+        sessionStore.saveSession(consumerName, 99, "newEncodedRecord");
 
-        // Then
+        // Then - verify save was called twice with the same key
         ArgumentCaptor<SessionModel> captor = ArgumentCaptor.forClass(SessionModel.class);
-        verify(sessionRepository).save(captor.capture());
+        verify(sessionRepository, times(2)).save(captor.capture());
 
-        SessionModel savedModel = captor.getValue();
-        assertEquals(consumerName, savedModel.getName());
-        assertEquals(newDeviceId, savedModel.getDeviceId());
-        assertEquals(newRecord, savedModel.getSessionRecord());
+        SessionModel lastSaved = captor.getAllValues().get(1);
+        assertEquals(consumerName, lastSaved.getName());
+        assertEquals(99, lastSaved.getDeviceId());
+        assertEquals("newEncodedRecord", lastSaved.getSessionRecord());
     }
 }

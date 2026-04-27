@@ -1,9 +1,10 @@
 package io.sekretess.dto;
 
-import org.springframework.stereotype.Component;
+import jakarta.validation.constraints.NotBlank;
 
-@Component
 public class AdsMessageDTO {
+
+    @NotBlank(message = "Message text cannot be blank")
     private String text;
 
     public String getText() {
