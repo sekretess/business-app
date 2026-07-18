@@ -8,6 +8,7 @@ import io.sekretess.exception.SessionCreationException;
 import io.sekretess.manager.SekretessManager;
 import io.sekretess.service.SekretessBusinessService;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -15,8 +16,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.file.Path;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,6 +87,80 @@ public class SekretessBusinessControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"text\": \"Hello\", \"consumer\": \"user123\"}"))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void sendFile_shouldReturnAccepted_whenFileSentSuccessfully() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                        "file",
+                        "hello.txt",
+                        MediaType.TEXT_PLAIN_VALUE,
+                        "Hello file".getBytes()
+        );
+
+        doNothing().when(sekretessManager).sendFileToConsumer(any(Path.class), anyString());
+
+        mockMvc.perform(multipart("/api/v1/business/messages/files")
+                                .file(file)
+                                .param("consumer", "user123"))
+                        .andExpect(status().isAccepted());
+
+        verify(sekretessManager).sendFileToConsumer(any(Path.class), eq("user123"));
+    }
+
+    @Test
+    void sendFile_shouldReturnBadRequest_whenFileIsEmpty() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                        "file",
+                        "empty.txt",
+                        MediaType.TEXT_PLAIN_VALUE,
+                        new byte[0]
+        );
+
+        mockMvc.perform(multipart("/api/v1/business/messages/files")
+                                .file(file)
+                                .param("consumer", "user123"))
+                        .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendFile_shouldReturnBadRequest_whenConsumerIsBlank() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                        "file",
+                        "hello.txt",
+                        MediaType.TEXT_PLAIN_VALUE,
+                        "Hello file".getBytes()
+        );
+
+        mockMvc.perform(multipart("/api/v1/business/messages/files")
+                                .file(file)
+                                .param("consumer", " "))
+                        .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendFile_shouldReturnBadRequest_whenFilePartIsMissing() throws Exception {
+        mockMvc.perform(multipart("/api/v1/business/messages/files")
+                                .param("consumer", "user123"))
+                        .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void sendFile_shouldReturnInternalServerError_whenFileSendFails() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                        "file",
+                        "hello.txt",
+                        MediaType.TEXT_PLAIN_VALUE,
+                        "Hello file".getBytes()
+        );
+
+        doThrow(new MessageSendException("Send failed"))
+                        .when(sekretessManager).sendFileToConsumer(any(Path.class), anyString());
+
+        mockMvc.perform(multipart("/api/v1/business/messages/files")
+                                .file(file)
+                                .param("consumer", "user123"))
+                        .andExpect(status().isInternalServerError());
     }
 
     @Test

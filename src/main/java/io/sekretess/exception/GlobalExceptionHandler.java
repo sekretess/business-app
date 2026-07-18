@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +24,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         logger.warn("Validation failed: {}", ex.getMessage());
+        return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestPartException.class})
+    public ResponseEntity<String> handleBadRequest(Exception ex) {
+        logger.warn("Bad request: {}", ex.getMessage());
         return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
     }
 

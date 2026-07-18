@@ -12,8 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -88,6 +94,87 @@ class SekretessBusinessServiceTest {
 
         assertTrue(ex.getMessage().contains("Failed to send message"));
         assertInstanceOf(MessageSendException.class, ex.getCause());
+    }
+
+    @Test
+    void handleSendFile_shouldDelegateToManagerAndDeleteTempFile() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                "text/plain",
+                "Hello file".getBytes()
+        );
+        AtomicReference<Path> uploadedPath = new AtomicReference<>();
+
+        doAnswer(invocation -> {
+            Path path = invocation.getArgument(0);
+            uploadedPath.set(path);
+            assertTrue(Files.exists(path));
+            assertEquals("Hello file", Files.readString(path));
+            return null;
+        }).when(sekretessManager).sendFileToConsumer(any(Path.class), eq("user123"));
+
+        service.handleSendFile(file, "user123");
+
+        verify(sekretessManager).sendFileToConsumer(any(Path.class), eq("user123"));
+        assertNotNull(uploadedPath.get());
+        assertFalse(Files.exists(uploadedPath.get()));
+    }
+
+    @Test
+    void handleSendFile_shouldThrowMessageProcessingException_whenMessageSendFails() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                "text/plain",
+                "Hello file".getBytes()
+        );
+        AtomicReference<Path> uploadedPath = new AtomicReference<>();
+
+        doAnswer(invocation -> {
+            uploadedPath.set(invocation.getArgument(0));
+            throw new MessageSendException("Send failed");
+        }).when(sekretessManager).sendFileToConsumer(any(Path.class), eq("user123"));
+
+        MessageProcessingException ex = assertThrows(MessageProcessingException.class,
+                () -> service.handleSendFile(file, "user123"));
+
+        assertTrue(ex.getMessage().contains("Failed to send file"));
+        assertInstanceOf(MessageSendException.class, ex.getCause());
+        assertNotNull(uploadedPath.get());
+        assertFalse(Files.exists(uploadedPath.get()));
+    }
+
+    @Test
+    void handleSendFile_shouldRejectEmptyFile() {
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "empty.txt",
+                "text/plain",
+                new byte[0]
+        );
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> service.handleSendFile(file, "user123"));
+
+        assertEquals("File cannot be empty", ex.getMessage());
+        verifyNoInteractions(sekretessManager);
+    }
+
+    @Test
+    void handleSendFile_shouldRejectBlankConsumer() {
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                "text/plain",
+                "Hello file".getBytes()
+        );
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> service.handleSendFile(file, " "));
+
+        assertEquals("Consumer cannot be blank", ex.getMessage());
+        verifyNoInteractions(sekretessManager);
     }
 
     @Test
