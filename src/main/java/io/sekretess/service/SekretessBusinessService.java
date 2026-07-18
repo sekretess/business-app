@@ -9,21 +9,34 @@ import io.sekretess.exception.SessionCreationException;
 import io.sekretess.manager.SekretessManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 @Service
 public class SekretessBusinessService {
     private final SekretessManager sekretessManager;
+    private final Path uploadTempDirectory;
     private static final Logger logger = LoggerFactory.getLogger(SekretessBusinessService.class);
 
 
+    @Autowired
     public SekretessBusinessService(SekretessManager sekretessManager) {
+        this(sekretessManager, initializeUploadTempDirectory());
+    }
+
+    SekretessBusinessService(SekretessManager sekretessManager, Path uploadTempDirectory) {
         this.sekretessManager = sekretessManager;
+        this.uploadTempDirectory = uploadTempDirectory;
     }
 
     public void handleSendMessage(MessageDTO messageDTO) {
@@ -89,7 +102,14 @@ public class SekretessBusinessService {
                 suffix = originalFilename.substring(extensionIndex);
             }
         }
-        return Files.createTempFile("sekretess-upload-", suffix);
+
+        if (Files.getFileAttributeView(uploadTempDirectory, PosixFileAttributeView.class) != null) {
+            FileAttribute<Set<PosixFilePermission>> permissions =
+                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+            return Files.createTempFile(uploadTempDirectory, "upload-", suffix, permissions);
+        }
+
+        return Files.createTempFile(uploadTempDirectory, "upload-", suffix);
     }
 
     private void deleteTempFile(Path tempFile) {
@@ -100,6 +120,20 @@ public class SekretessBusinessService {
             Files.deleteIfExists(tempFile);
         } catch (IOException e) {
             logger.warn("Failed to delete temp uploaded file: {}", tempFile, e);
+        }
+    }
+
+    private static Path initializeUploadTempDirectory() {
+        try {
+            Path systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir"));
+            if (Files.getFileAttributeView(systemTempDirectory, PosixFileAttributeView.class) != null) {
+                FileAttribute<Set<PosixFilePermission>> permissions =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+                return Files.createTempDirectory(systemTempDirectory, "sekretess-upload-", permissions);
+            }
+            return Files.createTempDirectory(systemTempDirectory, "sekretess-upload-");
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to initialize secure upload temp directory", e);
         }
     }
 

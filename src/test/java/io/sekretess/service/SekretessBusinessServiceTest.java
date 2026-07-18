@@ -7,6 +7,7 @@ import io.sekretess.exception.MessageSendException;
 import io.sekretess.exception.PrekeyBundleException;
 import io.sekretess.exception.SessionCreationException;
 import io.sekretess.manager.SekretessManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +31,19 @@ class SekretessBusinessServiceTest {
     private SekretessManager sekretessManager;
 
     private SekretessBusinessService service;
+    private Path tempDirectory;
 
     @BeforeEach
-    void setUp() {
-        service = new SekretessBusinessService(sekretessManager);
+    void setUp() throws Exception {
+        tempDirectory = Files.createTempDirectory("sekretess-service-test-");
+        service = new SekretessBusinessService(sekretessManager, tempDirectory);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        if (tempDirectory != null) {
+            Files.deleteIfExists(tempDirectory);
+        }
     }
 
     @Test
@@ -109,6 +119,7 @@ class SekretessBusinessServiceTest {
         doAnswer(invocation -> {
             Path path = invocation.getArgument(0);
             uploadedPath.set(path);
+            assertEquals(tempDirectory, path.getParent());
             assertTrue(Files.exists(path));
             assertEquals("Hello file", Files.readString(path));
             return null;
