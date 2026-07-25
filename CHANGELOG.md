@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.7.0](https://github.com/sekretess/business-app/compare/v1.6.1...v1.7.0) (2026-07-25)
+
+
+### Features
+
+* add file send ([2eba50a](https://github.com/sekretess/business-app/commit/2eba50a450f712dae5fe5e74e09984be68406c43))
+* add file send ([b809663](https://github.com/sekretess/business-app/commit/b8096630d2aca82f885fe13bd72612be0c3859d3))
+* code updates ([4905497](https://github.com/sekretess/business-app/commit/49054973d41de39993c5fc9eb6e2ac2680cb7ea5))
+* use sdk for encrypting ([2c216a3](https://github.com/sekretess/business-app/commit/2c216a3472399449812001f728fea18b93c38884))
+
+
+### Bug Fixes
+
+* bump sekretess lib ([81065f6](https://github.com/sekretess/business-app/commit/81065f68e6cf95d17901a802f4d423c69659c208))
+* code improvements ([4c481db](https://github.com/sekretess/business-app/commit/4c481db225b3f8a30be60051f7ae8acb14354bae))
+* create read only temp ([2ae2399](https://github.com/sekretess/business-app/commit/2ae239941820b22360733e4da270619d1f81ac03))
+* pom.xml to reduce vulnerabilities ([94563f4](https://github.com/sekretess/business-app/commit/94563f41d7c61d6f501baf8a6ef2b5b618b85147))
+* remove delete endpoint ([b3fc60f](https://github.com/sekretess/business-app/commit/b3fc60f1d9bb1b2e56a71b7e6bcc09b958594ab9))
+* remove import ([9a15752](https://github.com/sekretess/business-app/commit/9a157522830ea49be5350c5200f6672ff19ad46e))
+* remove not used codes ([3dcbb60](https://github.com/sekretess/business-app/commit/3dcbb60222187482f1bafdc94fe9222f36d3b2fb))
+* remove not used codes ([6ed860a](https://github.com/sekretess/business-app/commit/6ed860a004637fc503354ba6c74114c05fd8af89))
+* resolve code smell ([d7d87ab](https://github.com/sekretess/business-app/commit/d7d87ab213216c8ac8d91757a11400eae2da4842))
+* **security:** update dependencies ([ed3e6d4](https://github.com/sekretess/business-app/commit/ed3e6d4aefedda14199e4d3ba2079bd53aa48c68))
+* update classes ([78a633f](https://github.com/sekretess/business-app/commit/78a633fd7a875067bfef35ec181cac554e799e2d))
+* update code ([0c44413](https://github.com/sekretess/business-app/commit/0c44413c9fb782f4c389e6af0ea159128682f712))
+* update release ([d2f98f4](https://github.com/sekretess/business-app/commit/d2f98f4878f35fba903eaffc3a63bcbbbfedeb0f))
+* update response ([54db2e4](https://github.com/sekretess/business-app/commit/54db2e4053e0bc11acebb26a8cf76cfd6791546c))
+* update sonarcloud comments ([30e6219](https://github.com/sekretess/business-app/commit/30e6219ca282501b3d92f200777798abee4d718f))
+* update spring latest version ([5b86651](https://github.com/sekretess/business-app/commit/5b86651c528a5060f63cd69f04655e4a829545ec))
+* update spring latest version ([254d6c8](https://github.com/sekretess/business-app/commit/254d6c8e827c4694795a2986707833870c77936f))
+
+
+### Documentation
+
+* add example rest calls ([0a84bcb](https://github.com/sekretess/business-app/commit/0a84bcbeef86bf8a8b4d3f6e8c862f247a9898dc))
+* add first README.md ([299b877](https://github.com/sekretess/business-app/commit/299b877e52be89b87357071511b7ef1bd4455283))
+* Add GNU AGPL v3 license ([e4a9138](https://github.com/sekretess/business-app/commit/e4a91387b7bb8c658ce0bd118f26509461e9e50f))
+* add Readme.MD initial docs ([da48061](https://github.com/sekretess/business-app/commit/da48061ff429ea993142039a7e79f8a6581ba88f))
+
 ## [1.6.1](https://github.com/sekretess/sekretess-business-app/compare/v1.6.0...v1.6.1) (2025-09-07)
 
 
