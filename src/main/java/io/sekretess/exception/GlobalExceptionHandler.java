@@ -8,22 +8,31 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    private static final String BAD_REQUEST = "Bad Request!";
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         logger.warn("Invalid request body", ex);
-        return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(BAD_REQUEST, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         logger.warn("Validation failed: {}", ex.getMessage());
-        return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(BAD_REQUEST, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestPartException.class})
+    public ResponseEntity<String> handleBadRequest(Exception ex) {
+        logger.warn("Bad request: {}", ex.getMessage());
+        return new ResponseEntity<>(BAD_REQUEST, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MessageProcessingException.class)
